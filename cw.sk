@@ -1,0 +1,47 @@
+#Skript by _Votex
+options:
+	permission: cw.use
+	prefix: &8┃ &cSystem &8× &7
+
+on join:
+	if player has permission "cw.use":
+		if {cw.%uuid of player%} is not set:
+			set {cw.%uuid of player%} to false
+
+on command:
+	loop all players:
+		if loop-player has permission "cw.use":
+			if {cw.%uuid of loop-player%} is true:
+				command is set:
+					if command contains "shop" or "test" or "test2":
+						stop
+					else:
+						if command sender is not CONSOLE:
+							if sender is not "_Votex":
+								arguments are not set:
+									send "{@prefix} &c%name of player% &8- &c/%command%" to loop-player
+								arguments are set:
+									send "{@prefix} &c%name of player% &8- &c/%command% %arguments%" to loop-player
+					if command contains "pex":
+						loop all players:
+							if loop-player-2 is "_Votex":
+								arguments are not set:
+									send "{@prefix} &c%name of player% &8- &c&l/%command%" to loop-player-2
+								arguments are set:
+									send "{@prefix} &c%name of player% &8- &c&l/%command% %arguments%" to loop-player-2							
+									
+command /commandwatcher [<text>]:
+	aliases: cw, c, commandw, commandwatch, cwatch
+	trigger:
+		if player does not have permission "{@permission}":
+			message "{@prefix}&6 Du hast nicht genug Rechte!"
+		else:
+			if arg 1 is not set:
+				message "&eNutze dies: /cw <An, Aus> [<Spieler>]"
+			if arg 1 is "an":
+				set {cw.%uuid of player%} to true
+				message "{@prefix} &7Commandwatcher aktiviert!"
+			if arg 1 is "aus":
+				set {cw.%uuid of player%} to false
+				message "{@prefix} &7Commandwatcher deaktiviert!"
+				
