@@ -1,0 +1,29 @@
+options:
+	command: Playtime										# Default command /playtime
+	permission: playtime.use									# Access to all commands
+	prefix: &8┃ &aSystem &8×									# Prefix on chat messages
+	
+on join:
+	if {second::%uuid of player%} is not set:
+		set {second::%uuid of player%} to 0
+	if {minute::%uuid of player%} is not set:
+		set {minute::%uuid of player%} to 0
+	if {hour::%uuid of player%} is not set:
+		set {hour::%uuid of player%} to 0
+
+every 1 second:
+	loop all players:
+		add 1 to {second::%uuid of loop-player%}
+		if {second::%uuid of loop-player%} is 60:
+			subtract 60 from {second::%uuid of loop-player%}
+			add 1 to {minute::%uuid of loop-player%}
+		if {minute::%uuid of loop-player%} is 60:
+			subtract 60 from {minute::%uuid of loop-player%}
+			add 1 to {hour::%uuid of loop-player%}
+			
+command /{@command} [<player>]:
+	trigger:
+		if arg 1 is not set:
+			send "&7Deine Spielzeit auf &aSERVERNAME &7⇉ &a%{hour::%uuid of player%}% &7Stunden &a%{minute::%uuid of player%}% &7Minuten"
+		else:
+			send "&7%arg 1%'s Spielzeit auf &aaSERVERNAME &7⇉ &a%{hour::%uuid of arg 1%}% &7Stunden &a%{minute::%uuid of arg 1%}% &7Minuten"
